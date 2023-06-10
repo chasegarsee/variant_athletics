@@ -34,11 +34,17 @@ class CollectionsRecord extends FirestoreRecord {
   String get name => _name ?? '';
   bool hasName() => _name != null;
 
+  // "collectionPhotoUrl" field.
+  String? _collectionPhotoUrl;
+  String get collectionPhotoUrl => _collectionPhotoUrl ?? '';
+  bool hasCollectionPhotoUrl() => _collectionPhotoUrl != null;
+
   void _initializeFields() {
     _coachId = snapshotData['coachId'] as String?;
     _createdAt = snapshotData['createdAt'] as DateTime?;
     _description = snapshotData['description'] as String?;
     _name = snapshotData['name'] as String?;
+    _collectionPhotoUrl = snapshotData['collectionPhotoUrl'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -80,6 +86,7 @@ Map<String, dynamic> createCollectionsRecordData({
   DateTime? createdAt,
   String? description,
   String? name,
+  String? collectionPhotoUrl,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -87,6 +94,7 @@ Map<String, dynamic> createCollectionsRecordData({
       'createdAt': createdAt,
       'description': description,
       'name': name,
+      'collectionPhotoUrl': collectionPhotoUrl,
     }.withoutNulls,
   );
 

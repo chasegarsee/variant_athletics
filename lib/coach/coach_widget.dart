@@ -1,7 +1,7 @@
 import '/backend/backend.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -69,133 +69,153 @@ class _CoachWidgetState extends State<CoachWidget> {
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
             appBar: AppBar(
               backgroundColor: FlutterFlowTheme.of(context).primary,
-              automaticallyImplyLeading: false,
-              title: Text(
-                coachCoachesRecord.name,
-                style: FlutterFlowTheme.of(context).headlineMedium.override(
-                      fontFamily: 'Outfit',
-                      color: Colors.white,
-                      fontSize: 22.0,
-                    ),
+              automaticallyImplyLeading: true,
+              title: Align(
+                alignment: AlignmentDirectional(0.0, 0.0),
+                child: Text(
+                  coachCoachesRecord.name,
+                  style: FlutterFlowTheme.of(context).bodyMedium,
+                ),
               ),
-              actions: [],
+              actions: [
+                Align(
+                  alignment: AlignmentDirectional(0.0, 0.0),
+                  child: Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                    child: FlutterFlowIconButton(
+                      borderColor: FlutterFlowTheme.of(context).primary,
+                      borderRadius: 50.0,
+                      borderWidth: 1.0,
+                      buttonSize: 30.0,
+                      fillColor: FlutterFlowTheme.of(context).secondary,
+                      icon: Icon(
+                        Icons.search,
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                        size: 12.0,
+                      ),
+                      onPressed: () {
+                        print('IconButton pressed ...');
+                      },
+                    ),
+                  ),
+                ),
+              ],
               centerTitle: false,
               elevation: 2.0,
             ),
             body: SafeArea(
               top: true,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  StreamBuilder<List<CollectionsRecord>>(
-                    stream: queryCollectionsRecord(
-                      queryBuilder: (collectionsRecord) => collectionsRecord
-                          .where('coachId', isEqualTo: widget.coachId?.id),
-                    ),
-                    builder: (context, snapshot) {
-                      // Customize what your widget looks like when it's loading.
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: SizedBox(
-                            width: 50.0,
-                            height: 50.0,
-                            child: SpinKitWanderingCubes(
-                              color: FlutterFlowTheme.of(context).primary,
-                              size: 50.0,
-                            ),
-                          ),
-                        );
-                      }
-                      List<CollectionsRecord> rowCollectionsRecordList =
-                          snapshot.data!;
-                      return Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: List.generate(rowCollectionsRecordList.length,
-                            (rowIndex) {
-                          final rowCollectionsRecord =
-                              rowCollectionsRecordList[rowIndex];
-                          return Card(
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            elevation: 4.0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  10.0, 10.0, 10.0, 10.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
-                                    child: Text(
-                                      rowCollectionsRecord.name,
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryText,
-                                          ),
-                                    ),
-                                  ),
-                                  Text(
-                                    rowCollectionsRecord.description,
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
-                                        ),
-                                  ),
-                                ],
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      height: 165.0,
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: AlignmentDirectional(0.0, -1.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(0.0),
+                              child: Image.network(
+                                coachCoachesRecord.bannerUrl,
+                                width: 391.0,
+                                height: 100.0,
+                                fit: BoxFit.cover,
                               ),
                             ),
-                          );
-                        }),
-                      );
-                    },
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 40.0),
-                      child: FFButtonWidget(
-                        onPressed: () async {
-                          context.safePop();
-                        },
-                        text: 'Back',
-                        options: FFButtonOptions(
-                          width: 212.0,
-                          height: 50.0,
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          iconPadding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          color: FlutterFlowTheme.of(context).primary,
-                          textStyle: FlutterFlowTheme.of(context)
-                              .bodyLarge
-                              .override(
-                                fontFamily: 'Readex Pro',
-                                color: FlutterFlowTheme.of(context).primaryText,
-                              ),
-                          elevation: 3.0,
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            width: 1.0,
                           ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
+                          Align(
+                            alignment: AlignmentDirectional(-0.94, -0.25),
+                            child: Container(
+                              width: 120.0,
+                              height: 120.0,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: Image.network(
+                                coachCoachesRecord.profilePhotoUrl,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: AlignmentDirectional(-0.84, 0.87),
+                            child: Text(
+                              coachCoachesRecord.credentials,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                  ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
+                      child: StreamBuilder<List<CollectionsRecord>>(
+                        stream: queryCollectionsRecord(
+                          queryBuilder: (collectionsRecord) => collectionsRecord
+                              .where('coachId', isEqualTo: widget.coachId?.id),
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 50.0,
+                                height: 50.0,
+                                child: SpinKitWanderingCubes(
+                                  color: FlutterFlowTheme.of(context).primary,
+                                  size: 50.0,
+                                ),
+                              ),
+                            );
+                          }
+                          List<CollectionsRecord> rowCollectionsRecordList =
+                              snapshot.data!;
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: List.generate(
+                                  rowCollectionsRecordList.length, (rowIndex) {
+                                final rowCollectionsRecord =
+                                    rowCollectionsRecordList[rowIndex];
+                                return Container(
+                                  width: 120.0,
+                                  height: 120.0,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image.network(
+                                    rowCollectionsRecord.collectionPhotoUrl,
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              }),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

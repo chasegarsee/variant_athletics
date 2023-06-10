@@ -75,18 +75,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? ProfileWidget() : HomePageWidget(),
+          appStateNotifier.loggedIn ? ProfileWidget() : DiscoverWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? ProfileWidget() : HomePageWidget(),
+              appStateNotifier.loggedIn ? ProfileWidget() : DiscoverWidget(),
         ),
         FFRoute(
-          name: 'HomePage',
-          path: '/homePage',
-          builder: (context, params) => HomePageWidget(),
+          name: 'Discover',
+          path: '/discover',
+          builder: (context, params) => DiscoverWidget(),
         ),
         FFRoute(
           name: 'coach',
@@ -100,6 +100,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'profile',
           path: '/profile',
           builder: (context, params) => ProfileWidget(),
+        ),
+        FFRoute(
+          name: 'featured',
+          path: '/featured',
+          builder: (context, params) => FeaturedWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -266,7 +271,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.location);
-            return '/homePage';
+            return '/discover';
           }
           return null;
         },

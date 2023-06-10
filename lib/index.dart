@@ -1,4 +1,5 @@
 // Export pages
-export '/pages/home_page/home_page_widget.dart' show HomePageWidget;
+export '/pages/discover/discover_widget.dart' show DiscoverWidget;
 export '/coach/coach_widget.dart' show CoachWidget;
 export '/profile/profile_widget.dart' show ProfileWidget;
+export '/featured/featured_widget.dart' show FeaturedWidget;
