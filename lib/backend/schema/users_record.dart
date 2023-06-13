@@ -44,6 +44,11 @@ class UsersRecord extends FirestoreRecord {
   String get phoneNumber => _phoneNumber ?? '';
   bool hasPhoneNumber() => _phoneNumber != null;
 
+  // "favoriteCoach" field.
+  String? _favoriteCoach;
+  String get favoriteCoach => _favoriteCoach ?? '';
+  bool hasFavoriteCoach() => _favoriteCoach != null;
+
   void _initializeFields() {
     _email = snapshotData['email'] as String?;
     _displayName = snapshotData['display_name'] as String?;
@@ -51,6 +56,7 @@ class UsersRecord extends FirestoreRecord {
     _uid = snapshotData['uid'] as String?;
     _createdTime = snapshotData['created_time'] as DateTime?;
     _phoneNumber = snapshotData['phone_number'] as String?;
+    _favoriteCoach = snapshotData['favoriteCoach'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -93,6 +99,7 @@ Map<String, dynamic> createUsersRecordData({
   String? uid,
   DateTime? createdTime,
   String? phoneNumber,
+  String? favoriteCoach,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -102,6 +109,7 @@ Map<String, dynamic> createUsersRecordData({
       'uid': uid,
       'created_time': createdTime,
       'phone_number': phoneNumber,
+      'favoriteCoach': favoriteCoach,
     }.withoutNulls,
   );
 

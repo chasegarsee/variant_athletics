@@ -19,11 +19,6 @@ class VideosRecord extends FirestoreRecord {
   String get coachId => _coachId ?? '';
   bool hasCoachId() => _coachId != null;
 
-  // "collectionId" field.
-  String? _collectionId;
-  String get collectionId => _collectionId ?? '';
-  bool hasCollectionId() => _collectionId != null;
-
   // "createdAt" field.
   DateTime? _createdAt;
   DateTime? get createdAt => _createdAt;
@@ -39,12 +34,23 @@ class VideosRecord extends FirestoreRecord {
   String get workoutId => _workoutId ?? '';
   bool hasWorkoutId() => _workoutId != null;
 
+  // "movementId" field.
+  String? _movementId;
+  String get movementId => _movementId ?? '';
+  bool hasMovementId() => _movementId != null;
+
+  // "programId" field.
+  String? _programId;
+  String get programId => _programId ?? '';
+  bool hasProgramId() => _programId != null;
+
   void _initializeFields() {
     _coachId = snapshotData['coachId'] as String?;
-    _collectionId = snapshotData['collectionId'] as String?;
     _createdAt = snapshotData['createdAt'] as DateTime?;
     _videoUrl = snapshotData['videoUrl'] as String?;
     _workoutId = snapshotData['workoutId'] as String?;
+    _movementId = snapshotData['movementId'] as String?;
+    _programId = snapshotData['programId'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -82,18 +88,20 @@ class VideosRecord extends FirestoreRecord {
 
 Map<String, dynamic> createVideosRecordData({
   String? coachId,
-  String? collectionId,
   DateTime? createdAt,
   String? videoUrl,
   String? workoutId,
+  String? movementId,
+  String? programId,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
       'coachId': coachId,
-      'collectionId': collectionId,
       'createdAt': createdAt,
       'videoUrl': videoUrl,
       'workoutId': workoutId,
+      'movementId': movementId,
+      'programId': programId,
     }.withoutNulls,
   );
 

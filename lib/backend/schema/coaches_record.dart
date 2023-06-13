@@ -54,6 +54,11 @@ class CoachesRecord extends FirestoreRecord {
   String get credentials => _credentials ?? '';
   bool hasCredentials() => _credentials != null;
 
+  // "uid" field.
+  String? _uid;
+  String get uid => _uid ?? '';
+  bool hasUid() => _uid != null;
+
   void _initializeFields() {
     _bannerUrl = snapshotData['bannerUrl'] as String?;
     _email = snapshotData['email'] as String?;
@@ -63,6 +68,7 @@ class CoachesRecord extends FirestoreRecord {
     _url = snapshotData['url'] as String?;
     _featured = snapshotData['featured'] as bool?;
     _credentials = snapshotData['credentials'] as String?;
+    _uid = snapshotData['uid'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -108,6 +114,7 @@ Map<String, dynamic> createCoachesRecordData({
   String? url,
   bool? featured,
   String? credentials,
+  String? uid,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -119,6 +126,7 @@ Map<String, dynamic> createCoachesRecordData({
       'url': url,
       'featured': featured,
       'credentials': credentials,
+      'uid': uid,
     }.withoutNulls,
   );
 

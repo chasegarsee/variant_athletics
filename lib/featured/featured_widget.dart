@@ -42,6 +42,8 @@ class _FeaturedWidgetState extends State<FeaturedWidget> {
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
+          iconTheme:
+              IconThemeData(color: FlutterFlowTheme.of(context).primaryText),
           automaticallyImplyLeading: true,
           title: Row(
             mainAxisSize: MainAxisSize.max,
@@ -76,9 +78,11 @@ class _FeaturedWidgetState extends State<FeaturedWidget> {
                   padding:
                       EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 0.0),
                   child: StreamBuilder<List<CoachesRecord>>(
-                    stream: queryCoachesRecord(
-                      queryBuilder: (coachesRecord) =>
-                          coachesRecord.where('featured', isEqualTo: true),
+                    stream: FFAppState().featuredCoaches(
+                      requestFn: () => queryCoachesRecord(
+                        queryBuilder: (coachesRecord) =>
+                            coachesRecord.where('featured', isEqualTo: true),
+                      ),
                     ),
                     builder: (context, snapshot) {
                       // Customize what your widget looks like when it's loading.
@@ -118,7 +122,7 @@ class _FeaturedWidgetState extends State<FeaturedWidget> {
                               context.pushNamed(
                                 'coach',
                                 queryParameters: {
-                                  'coachId': serializeParam(
+                                  'coachUid': serializeParam(
                                     gridViewCoachesRecord.reference,
                                     ParamType.DocumentReference,
                                   ),

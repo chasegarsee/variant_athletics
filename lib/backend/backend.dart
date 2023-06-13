@@ -7,7 +7,6 @@ import 'schema/util/firestore_util.dart';
 
 import 'schema/users_record.dart';
 import 'schema/coaches_record.dart';
-import 'schema/collections_record.dart';
 import 'schema/comments_record.dart';
 import 'schema/likes_record.dart';
 import 'schema/movements_record.dart';
@@ -15,6 +14,7 @@ import 'schema/streaks_record.dart';
 import 'schema/videos_record.dart';
 import 'schema/workouts_record.dart';
 import 'schema/subscriptions_record.dart';
+import 'schema/programs_record.dart';
 
 export 'dart:async' show StreamSubscription;
 export 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,7 +24,6 @@ export 'schema/util/schema_util.dart';
 
 export 'schema/users_record.dart';
 export 'schema/coaches_record.dart';
-export 'schema/collections_record.dart';
 export 'schema/comments_record.dart';
 export 'schema/likes_record.dart';
 export 'schema/movements_record.dart';
@@ -32,6 +31,7 @@ export 'schema/streaks_record.dart';
 export 'schema/videos_record.dart';
 export 'schema/workouts_record.dart';
 export 'schema/subscriptions_record.dart';
+export 'schema/programs_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
 Future<int> queryUsersRecordCount({
@@ -131,58 +131,6 @@ Future<FFFirestorePage<CoachesRecord>> queryCoachesRecordPage({
     queryCollectionPage(
       CoachesRecord.collection,
       CoachesRecord.fromSnapshot,
-      queryBuilder: queryBuilder,
-      nextPageMarker: nextPageMarker,
-      pageSize: pageSize,
-      isStream: isStream,
-    );
-
-/// Functions to query CollectionsRecords (as a Stream and as a Future).
-Future<int> queryCollectionsRecordCount({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-}) =>
-    queryCollectionCount(
-      CollectionsRecord.collection,
-      queryBuilder: queryBuilder,
-      limit: limit,
-    );
-
-Stream<List<CollectionsRecord>> queryCollectionsRecord({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollection(
-      CollectionsRecord.collection,
-      CollectionsRecord.fromSnapshot,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
-Future<List<CollectionsRecord>> queryCollectionsRecordOnce({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollectionOnce(
-      CollectionsRecord.collection,
-      CollectionsRecord.fromSnapshot,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
-Future<FFFirestorePage<CollectionsRecord>> queryCollectionsRecordPage({
-  Query Function(Query)? queryBuilder,
-  DocumentSnapshot? nextPageMarker,
-  required int pageSize,
-  required bool isStream,
-}) =>
-    queryCollectionPage(
-      CollectionsRecord.collection,
-      CollectionsRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       nextPageMarker: nextPageMarker,
       pageSize: pageSize,
@@ -551,6 +499,58 @@ Future<FFFirestorePage<SubscriptionsRecord>> querySubscriptionsRecordPage({
     queryCollectionPage(
       SubscriptionsRecord.collection(parent),
       SubscriptionsRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      nextPageMarker: nextPageMarker,
+      pageSize: pageSize,
+      isStream: isStream,
+    );
+
+/// Functions to query ProgramsRecords (as a Stream and as a Future).
+Future<int> queryProgramsRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      ProgramsRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
+Stream<List<ProgramsRecord>> queryProgramsRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      ProgramsRecord.collection,
+      ProgramsRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<ProgramsRecord>> queryProgramsRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      ProgramsRecord.collection,
+      ProgramsRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<FFFirestorePage<ProgramsRecord>> queryProgramsRecordPage({
+  Query Function(Query)? queryBuilder,
+  DocumentSnapshot? nextPageMarker,
+  required int pageSize,
+  required bool isStream,
+}) =>
+    queryCollectionPage(
+      ProgramsRecord.collection,
+      ProgramsRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       nextPageMarker: nextPageMarker,
       pageSize: pageSize,

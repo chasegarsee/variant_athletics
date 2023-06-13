@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow_theme.dart';
 import '/backend/backend.dart';
 
@@ -75,16 +76,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? ProfileWidget() : DiscoverWidget(),
+          appStateNotifier.loggedIn ? DiscoverWidget() : Auth2Widget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? ProfileWidget() : DiscoverWidget(),
+              appStateNotifier.loggedIn ? DiscoverWidget() : Auth2Widget(),
         ),
         FFRoute(
-          name: 'Discover',
+          name: 'discover',
           path: '/discover',
           builder: (context, params) => DiscoverWidget(),
         ),
@@ -92,21 +93,48 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'coach',
           path: '/coach',
           builder: (context, params) => CoachWidget(
-            coachId: params.getParam(
-                'coachId', ParamType.DocumentReference, false, ['coaches']),
+            coachUid: params.getParam(
+                'coachUid', ParamType.DocumentReference, false, ['coaches']),
           ),
         ),
         FFRoute(
           name: 'profile',
           path: '/profile',
-          builder: (context, params) => ProfileWidget(),
+          builder: (context, params) => ProfileWidget(
+            user: params.getParam(
+                'user', ParamType.DocumentReference, false, ['users']),
+          ),
         ),
         FFRoute(
           name: 'featured',
           path: '/featured',
           builder: (context, params) => FeaturedWidget(),
+        ),
+        FFRoute(
+          name: 'program',
+          path: '/program',
+          builder: (context, params) => ProgramWidget(
+            programRef: params.getParam(
+                'programRef', ParamType.DocumentReference, false, ['programs']),
+          ),
+        ),
+        FFRoute(
+          name: 'Auth2',
+          path: '/auth2',
+          builder: (context, params) => Auth2Widget(),
+        ),
+        FFRoute(
+          name: 'workout',
+          path: '/workout',
+          builder: (context, params) => WorkoutWidget(
+            workoutRef: params.getParam(
+                'workoutRef', ParamType.DocumentReference, false, ['workouts']),
+            programRef: params.getParam(
+                'programRef', ParamType.DocumentReference, false, ['programs']),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
+      observers: [routeObserver],
     );
 
 extension NavParamExtensions on Map<String, String?> {
@@ -271,7 +299,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.location);
-            return '/discover';
+            return '/auth2';
           }
           return null;
         },
