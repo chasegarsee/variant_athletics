@@ -34,11 +34,17 @@ class MovementsRecord extends FirestoreRecord {
   String get videoId => _videoId ?? '';
   bool hasVideoId() => _videoId != null;
 
+  // "videoUrl" field.
+  String? _videoUrl;
+  String get videoUrl => _videoUrl ?? '';
+  bool hasVideoUrl() => _videoUrl != null;
+
   void _initializeFields() {
     _details = snapshotData['details'] as String?;
     _name = snapshotData['name'] as String?;
     _workoutId = snapshotData['workoutId'] as String?;
     _videoId = snapshotData['videoId'] as String?;
+    _videoUrl = snapshotData['videoUrl'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -80,6 +86,7 @@ Map<String, dynamic> createMovementsRecordData({
   String? name,
   String? workoutId,
   String? videoId,
+  String? videoUrl,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -87,6 +94,7 @@ Map<String, dynamic> createMovementsRecordData({
       'name': name,
       'workoutId': workoutId,
       'videoId': videoId,
+      'videoUrl': videoUrl,
     }.withoutNulls,
   );
 
