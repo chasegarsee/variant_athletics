@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,12 @@ class _CoachWidgetState extends State<CoachWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => CoachModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      // setPageIsPortal
+      FFAppState().isPortalBool = false;
+    });
   }
 
   @override
@@ -43,6 +50,8 @@ class _CoachWidgetState extends State<CoachWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return StreamBuilder<CoachesRecord>(
       stream: CoachesRecord.getDocument(widget.coachUid!),
       builder: (context, snapshot) {

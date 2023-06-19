@@ -29,10 +29,22 @@ class WorkoutsRecord extends FirestoreRecord {
   String get programId => _programId ?? '';
   bool hasProgramId() => _programId != null;
 
+  // "exercises" field.
+  List<String>? _exercises;
+  List<String> get exercises => _exercises ?? const [];
+  bool hasExercises() => _exercises != null;
+
+  // "coachUid" field.
+  String? _coachUid;
+  String get coachUid => _coachUid ?? '';
+  bool hasCoachUid() => _coachUid != null;
+
   void _initializeFields() {
     _description = snapshotData['description'] as String?;
     _name = snapshotData['name'] as String?;
     _programId = snapshotData['programId'] as String?;
+    _exercises = getDataList(snapshotData['exercises']);
+    _coachUid = snapshotData['coachUid'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -73,12 +85,14 @@ Map<String, dynamic> createWorkoutsRecordData({
   String? description,
   String? name,
   String? programId,
+  String? coachUid,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
       'description': description,
       'name': name,
       'programId': programId,
+      'coachUid': coachUid,
     }.withoutNulls,
   );
 

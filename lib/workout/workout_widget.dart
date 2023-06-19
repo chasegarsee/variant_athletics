@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_video_player.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,12 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => WorkoutModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      // setPageIsPortal
+      FFAppState().isPortalBool = false;
+    });
   }
 
   @override
@@ -45,6 +52,8 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return StreamBuilder<List<WorkoutsRecord>>(
       stream: queryWorkoutsRecord(
         queryBuilder: (workoutsRecord) =>
@@ -90,7 +99,9 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
                     color: FlutterFlowTheme.of(context).primaryText),
                 automaticallyImplyLeading: true,
                 title: Text(
-                  'Page Title',
+                  FFLocalizations.of(context).getText(
+                    's7u359qz' /* Page Title */,
+                  ),
                   style: FlutterFlowTheme.of(context).headlineMedium.override(
                         fontFamily: 'Jost',
                         color: FlutterFlowTheme.of(context).primaryText,
@@ -304,10 +315,13 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
                       ),
                     ],
                   ),
-                  wrapWithModel(
-                    model: _model.bottomNavModel,
-                    updateCallback: () => setState(() {}),
-                    child: BottomNavWidget(),
+                  Align(
+                    alignment: AlignmentDirectional(0.0, 1.0),
+                    child: wrapWithModel(
+                      model: _model.bottomNavModel,
+                      updateCallback: () => setState(() {}),
+                      child: BottomNavWidget(),
+                    ),
                   ),
                 ],
               ),

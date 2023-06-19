@@ -4,6 +4,7 @@ import '/components/bottom_nav_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,12 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => DiscoverModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      // setPageIsPortal
+      FFAppState().isPortalBool = false;
+    });
   }
 
   @override
@@ -37,6 +44,8 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return StreamBuilder<List<UsersRecord>>(
       stream: FFAppState().currentUser(
         requestFn: () => queryUsersRecord(
@@ -79,7 +88,9 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
               backgroundColor: FlutterFlowTheme.of(context).primary,
               automaticallyImplyLeading: false,
               title: Text(
-                'Variant Athletics',
+                FFLocalizations.of(context).getText(
+                  'mrdy4n49' /* Variant Athletics */,
+                ),
                 style: FlutterFlowTheme.of(context).headlineMedium.override(
                       fontFamily: 'Jost',
                       color: FlutterFlowTheme.of(context).primaryText,
@@ -162,7 +173,10 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                                                   .fromSTEB(
                                                       10.0, 10.0, 10.0, 10.0),
                                               child: Text(
-                                                'Featured',
+                                                FFLocalizations.of(context)
+                                                    .getText(
+                                                  'f1qx849h' /* Featured */,
+                                                ),
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyMedium
@@ -192,7 +206,10 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                                                   context.pushNamed('featured');
                                                 },
                                                 child: Text(
-                                                  'Show All ➔',
+                                                  FFLocalizations.of(context)
+                                                      .getText(
+                                                    'nw0p60he' /* Show All ➔ */,
+                                                  ),
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .bodyMedium
@@ -304,16 +321,23 @@ class _DiscoverWidgetState extends State<DiscoverWidget> {
                                   ),
                                 ),
                               ),
+                              Text(
+                                FFAppState().isPortalBool.toString(),
+                                style: FlutterFlowTheme.of(context).bodyMedium,
+                              ),
                             ],
                           ),
                         ],
                       );
                     },
                   ),
-                  wrapWithModel(
-                    model: _model.bottomNavModel,
-                    updateCallback: () => setState(() {}),
-                    child: BottomNavWidget(),
+                  Align(
+                    alignment: AlignmentDirectional(0.0, 1.01),
+                    child: wrapWithModel(
+                      model: _model.bottomNavModel,
+                      updateCallback: () => setState(() {}),
+                      child: BottomNavWidget(),
+                    ),
                   ),
                 ],
               ),

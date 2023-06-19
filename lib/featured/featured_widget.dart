@@ -2,6 +2,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,12 @@ class _FeaturedWidgetState extends State<FeaturedWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => FeaturedModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      // setPageIsPortal
+      FFAppState().isPortalBool = false;
+    });
   }
 
   @override
@@ -35,6 +42,8 @@ class _FeaturedWidgetState extends State<FeaturedWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
       child: Scaffold(
@@ -54,7 +63,9 @@ class _FeaturedWidgetState extends State<FeaturedWidget> {
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 50.0, 0.0),
                   child: Text(
-                    'Featured',
+                    FFLocalizations.of(context).getText(
+                      'kx8gw9oa' /* Featured */,
+                    ),
                     style: FlutterFlowTheme.of(context).bodyMedium,
                   ),
                 ),

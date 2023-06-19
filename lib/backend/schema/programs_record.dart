@@ -39,12 +39,36 @@ class ProgramsRecord extends FirestoreRecord {
   String get programPhotoUrl => _programPhotoUrl ?? '';
   bool hasProgramPhotoUrl() => _programPhotoUrl != null;
 
+  // "color" field.
+  String? _color;
+  String get color => _color ?? '';
+  bool hasColor() => _color != null;
+
+  // "photoBlurHash" field.
+  String? _photoBlurHash;
+  String get photoBlurHash => _photoBlurHash ?? '';
+  bool hasPhotoBlurHash() => _photoBlurHash != null;
+
+  // "length" field.
+  String? _length;
+  String get length => _length ?? '';
+  bool hasLength() => _length != null;
+
+  // "isLive" field.
+  bool? _isLive;
+  bool get isLive => _isLive ?? false;
+  bool hasIsLive() => _isLive != null;
+
   void _initializeFields() {
     _coachId = snapshotData['coachId'] as String?;
     _createdAt = snapshotData['createdAt'] as DateTime?;
     _description = snapshotData['description'] as String?;
     _name = snapshotData['name'] as String?;
     _programPhotoUrl = snapshotData['programPhotoUrl'] as String?;
+    _color = snapshotData['color'] as String?;
+    _photoBlurHash = snapshotData['photoBlurHash'] as String?;
+    _length = snapshotData['length'] as String?;
+    _isLive = snapshotData['isLive'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -87,6 +111,10 @@ Map<String, dynamic> createProgramsRecordData({
   String? description,
   String? name,
   String? programPhotoUrl,
+  String? color,
+  String? photoBlurHash,
+  String? length,
+  bool? isLive,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -95,6 +123,10 @@ Map<String, dynamic> createProgramsRecordData({
       'description': description,
       'name': name,
       'programPhotoUrl': programPhotoUrl,
+      'color': color,
+      'photoBlurHash': photoBlurHash,
+      'length': length,
+      'isLive': isLive,
     }.withoutNulls,
   );
 

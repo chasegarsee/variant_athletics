@@ -13,11 +13,35 @@ class FFAppState extends ChangeNotifier {
 
   FFAppState._internal();
 
-  Future initializePersistedState() async {}
+  Future initializePersistedState() async {
+    prefs = await SharedPreferences.getInstance();
+    _safeInit(() {
+      _isPortal = prefs.getString('ff_isPortal') ?? _isPortal;
+    });
+    _safeInit(() {
+      _isPortalBool = prefs.getBool('ff_isPortalBool') ?? _isPortalBool;
+    });
+  }
 
   void update(VoidCallback callback) {
     callback();
     notifyListeners();
+  }
+
+  late SharedPreferences prefs;
+
+  String _isPortal = 'false';
+  String get isPortal => _isPortal;
+  set isPortal(String _value) {
+    _isPortal = _value;
+    prefs.setString('ff_isPortal', _value);
+  }
+
+  bool _isPortalBool = false;
+  bool get isPortalBool => _isPortalBool;
+  set isPortalBool(bool _value) {
+    _isPortalBool = _value;
+    prefs.setBool('ff_isPortalBool', _value);
   }
 
   final _currentUserManager = StreamRequestManager<List<UsersRecord>>();
@@ -64,6 +88,23 @@ class FFAppState extends ChangeNotifier {
   void clearFeaturedCoachesCache() => _featuredCoachesManager.clear();
   void clearFeaturedCoachesCacheKey(String? uniqueKey) =>
       _featuredCoachesManager.clearRequest(uniqueKey);
+
+  final _authenticatedCoachWorkoutsManager =
+      FutureRequestManager<List<WorkoutsRecord>>();
+  Future<List<WorkoutsRecord>> authenticatedCoachWorkouts({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Future<List<WorkoutsRecord>> Function() requestFn,
+  }) =>
+      _authenticatedCoachWorkoutsManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearAuthenticatedCoachWorkoutsCache() =>
+      _authenticatedCoachWorkoutsManager.clear();
+  void clearAuthenticatedCoachWorkoutsCacheKey(String? uniqueKey) =>
+      _authenticatedCoachWorkoutsManager.clearRequest(uniqueKey);
 }
 
 LatLng? _latLngFromString(String? val) {

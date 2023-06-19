@@ -54,10 +54,13 @@ class AppStateNotifier extends ChangeNotifier {
   void updateNotifyOnAuthChange(bool notify) => notifyOnAuthChange = notify;
 
   void update(BaseAuthUser newUser) {
+    final shouldUpdate =
+        user?.uid == null || newUser.uid == null || user?.uid != newUser.uid;
     initialUser ??= newUser;
     user = newUser;
     // Refresh the app on auth change unless explicitly marked otherwise.
-    if (notifyOnAuthChange) {
+    // No need to update unless the user has changed.
+    if (notifyOnAuthChange && shouldUpdate) {
       notifyListeners();
     }
     // Once again mark the notifier as needing to update on auth change
@@ -131,6 +134,60 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 'workoutRef', ParamType.DocumentReference, false, ['workouts']),
             programRef: params.getParam(
                 'programRef', ParamType.DocumentReference, false, ['programs']),
+          ),
+        ),
+        FFRoute(
+          name: 'workoutOverview',
+          path: '/workoutOverview',
+          builder: (context, params) => WorkoutOverviewWidget(
+            workoutRef: params.getParam(
+                'workoutRef', ParamType.DocumentReference, false, ['workouts']),
+            programRef: params.getParam(
+                'programRef', ParamType.DocumentReference, false, ['programs']),
+          ),
+        ),
+        FFRoute(
+          name: 'coachPortal',
+          path: '/coachPortal',
+          asyncParams: {
+            'currentUser': getDoc(['users'], UsersRecord.fromSnapshot),
+            'currentCoach': getDoc(['coaches'], CoachesRecord.fromSnapshot),
+            'programIndex0': getDoc(['programs'], ProgramsRecord.fromSnapshot),
+          },
+          builder: (context, params) => CoachPortalWidget(
+            currentUser: params.getParam('currentUser', ParamType.Document),
+            currentCoach: params.getParam('currentCoach', ParamType.Document),
+            programIndex0: params.getParam('programIndex0', ParamType.Document),
+          ),
+        ),
+        FFRoute(
+          name: 'newProgram',
+          path: '/newProgram',
+          builder: (context, params) => NewProgramWidget(
+            coachRef: params.getParam(
+                'coachRef', ParamType.DocumentReference, false, ['coaches']),
+          ),
+        ),
+        FFRoute(
+          name: 'newWorkout',
+          path: '/newWorkout',
+          builder: (context, params) => NewWorkoutWidget(
+            coachRef: params.getParam(
+                'coachRef', ParamType.DocumentReference, false, ['coaches']),
+          ),
+        ),
+        FFRoute(
+          name: 'editProgram',
+          path: '/editProgram',
+          asyncParams: {
+            'programDoc': getDoc(['programs'], ProgramsRecord.fromSnapshot),
+            'currentUser': getDoc(['users'], UsersRecord.fromSnapshot),
+            'coachDoc': getDoc(['coaches'], CoachesRecord.fromSnapshot),
+          },
+          builder: (context, params) => EditProgramWidget(
+            programDoc: params.getParam('programDoc', ParamType.Document),
+            currentUser: params.getParam('currentUser', ParamType.Document),
+            coachDoc: params.getParam('coachDoc', ParamType.Document),
           ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),

@@ -1,8 +1,10 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -101,6 +103,12 @@ class _Auth2WidgetState extends State<Auth2Widget>
     super.initState();
     _model = createModel(context, () => Auth2Model());
 
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      // setPageIsPortal
+      FFAppState().isPortalBool = false;
+    });
+
     _model.emailAddressController1 ??= TextEditingController();
     _model.passwordController1 ??= TextEditingController();
     _model.confirmPasswordController ??= TextEditingController();
@@ -117,6 +125,8 @@ class _Auth2WidgetState extends State<Auth2Widget>
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
       child: Scaffold(
@@ -140,7 +150,9 @@ class _Auth2WidgetState extends State<Auth2Widget>
                     padding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 72.0),
                     child: Text(
-                      'VARIANT',
+                      FFLocalizations.of(context).getText(
+                        'zjv4gze5' /* VARIANT */,
+                      ),
                       style: FlutterFlowTheme.of(context).displaySmall,
                     ),
                   ),
@@ -211,10 +223,16 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                         indicatorWeight: 3.0,
                                         tabs: [
                                           Tab(
-                                            text: 'Create Account',
+                                            text: FFLocalizations.of(context)
+                                                .getText(
+                                              'p79b78xk' /* Create Account */,
+                                            ),
                                           ),
                                           Tab(
-                                            text: 'Log In',
+                                            text: FFLocalizations.of(context)
+                                                .getText(
+                                              '9ry5mnyr' /* Log In */,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -252,7 +270,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                         ),
                                                       ),
                                                     Text(
-                                                      'Create Account',
+                                                      FFLocalizations.of(
+                                                              context)
+                                                          .getText(
+                                                        '9rqw9zo9' /* Create Account */,
+                                                      ),
                                                       textAlign:
                                                           TextAlign.start,
                                                       style:
@@ -269,7 +291,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                                   0.0,
                                                                   24.0),
                                                       child: Text(
-                                                        'Let\'s get started by filling out the form below.',
+                                                        FFLocalizations.of(
+                                                                context)
+                                                            .getText(
+                                                          'j2pa6ow9' /* Let's get started by filling o... */,
+                                                        ),
                                                         textAlign:
                                                             TextAlign.start,
                                                         style:
@@ -298,7 +324,12 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                           obscureText: false,
                                                           decoration:
                                                               InputDecoration(
-                                                            labelText: 'Email',
+                                                            labelText:
+                                                                FFLocalizations.of(
+                                                                        context)
+                                                                    .getText(
+                                                              '89t2t24h' /* Email */,
+                                                            ),
                                                             labelStyle:
                                                                 FlutterFlowTheme.of(
                                                                         context)
@@ -407,7 +438,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                           decoration:
                                                               InputDecoration(
                                                             labelText:
-                                                                'Password',
+                                                                FFLocalizations.of(
+                                                                        context)
+                                                                    .getText(
+                                                              '3yqx8p8d' /* Password */,
+                                                            ),
                                                             labelStyle:
                                                                 FlutterFlowTheme.of(
                                                                         context)
@@ -536,7 +571,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                           decoration:
                                                               InputDecoration(
                                                             labelText:
-                                                                'Confirm Password',
+                                                                FFLocalizations.of(
+                                                                        context)
+                                                                    .getText(
+                                                              '6bwqjvb8' /* Confirm Password */,
+                                                            ),
                                                             labelStyle:
                                                                 FlutterFlowTheme.of(
                                                                         context)
@@ -691,12 +730,55 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                               return;
                                                             }
 
+                                                            final usersCreateData =
+                                                                createUsersRecordData(
+                                                              favoriteCoach:
+                                                                  '7i2AKzKcQdeV75IH85wl',
+                                                              photoUrl: '',
+                                                              displayName: '',
+                                                              uid: '',
+                                                              isCoach: false,
+                                                              coachUid: '',
+                                                              phoneNumber: '',
+                                                            );
+                                                            await UsersRecord
+                                                                .collection
+                                                                .doc(user.uid)
+                                                                .update(
+                                                                    usersCreateData);
+
+                                                            final usersUpdateData =
+                                                                {
+                                                              ...createUsersRecordData(
+                                                                uid:
+                                                                    currentUserUid,
+                                                                displayName:
+                                                                    currentUserDisplayName,
+                                                                photoUrl:
+                                                                    currentUserPhoto,
+                                                              ),
+                                                              'created_time':
+                                                                  FieldValue
+                                                                      .serverTimestamp(),
+                                                            };
+                                                            await currentUserReference!
+                                                                .update(
+                                                                    usersUpdateData);
+                                                            await Future.delayed(
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        1000));
+
                                                             context.goNamedAuth(
                                                                 'discover',
                                                                 context
                                                                     .mounted);
                                                           },
-                                                          text: 'Get Started',
+                                                          text: FFLocalizations
+                                                                  .of(context)
+                                                              .getText(
+                                                            'zgsj8ps0' /* Get Started */,
+                                                          ),
                                                           options:
                                                               FFButtonOptions(
                                                             width: 230.0,
@@ -761,7 +843,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                                         16.0,
                                                                         24.0),
                                                             child: Text(
-                                                              'Or sign up with',
+                                                              FFLocalizations.of(
+                                                                      context)
+                                                                  .getText(
+                                                                'n1q94jtb' /* Or sign up with */,
+                                                              ),
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,
@@ -830,8 +916,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                                           context
                                                                               .mounted);
                                                                     },
-                                                                    text:
-                                                                        'Continue with Google',
+                                                                    text: FFLocalizations.of(
+                                                                            context)
+                                                                        .getText(
+                                                                      '89g3hoio' /* Continue with Google */,
+                                                                    ),
                                                                     icon:
                                                                         FaIcon(
                                                                       FontAwesomeIcons
@@ -909,7 +998,9 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                                                 context.mounted);
                                                                           },
                                                                           text:
-                                                                              'Continue with Apple',
+                                                                              FFLocalizations.of(context).getText(
+                                                                            'b3vsxxpa' /* Continue with Apple */,
+                                                                          ),
                                                                           icon:
                                                                               FaIcon(
                                                                             FontAwesomeIcons.apple,
@@ -994,7 +1085,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                         ),
                                                       ),
                                                     Text(
-                                                      'Welcome Back',
+                                                      FFLocalizations.of(
+                                                              context)
+                                                          .getText(
+                                                        'xsdne37o' /* Welcome Back */,
+                                                      ),
                                                       textAlign:
                                                           TextAlign.start,
                                                       style:
@@ -1011,7 +1106,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                                   0.0,
                                                                   24.0),
                                                       child: Text(
-                                                        'Fill out the information below in order to access your account.',
+                                                        FFLocalizations.of(
+                                                                context)
+                                                            .getText(
+                                                          'bnfgtyeo' /* Fill out the information below... */,
+                                                        ),
                                                         textAlign:
                                                             TextAlign.start,
                                                         style:
@@ -1040,7 +1139,12 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                           obscureText: false,
                                                           decoration:
                                                               InputDecoration(
-                                                            labelText: 'Email',
+                                                            labelText:
+                                                                FFLocalizations.of(
+                                                                        context)
+                                                                    .getText(
+                                                              'a3dw2iot' /* Email */,
+                                                            ),
                                                             labelStyle:
                                                                 FlutterFlowTheme.of(
                                                                         context)
@@ -1149,7 +1253,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                           decoration:
                                                               InputDecoration(
                                                             labelText:
-                                                                'Password',
+                                                                FFLocalizations.of(
+                                                                        context)
+                                                                    .getText(
+                                                              'oecvbs1l' /* Password */,
+                                                            ),
                                                             labelStyle:
                                                                 FlutterFlowTheme.of(
                                                                         context)
@@ -1292,7 +1400,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                                 context
                                                                     .mounted);
                                                           },
-                                                          text: 'Sign In',
+                                                          text: FFLocalizations
+                                                                  .of(context)
+                                                              .getText(
+                                                            '6k6jys43' /* Sign In */,
+                                                          ),
                                                           options:
                                                               FFButtonOptions(
                                                             width: 230.0,
@@ -1353,7 +1465,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                                     16.0,
                                                                     24.0),
                                                         child: Text(
-                                                          'Or sign in with',
+                                                          FFLocalizations.of(
+                                                                  context)
+                                                              .getText(
+                                                            'y4i42p1z' /* Or sign in with */,
+                                                          ),
                                                           textAlign:
                                                               TextAlign.center,
                                                           style: FlutterFlowTheme
@@ -1413,8 +1529,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                                     context
                                                                         .mounted);
                                                               },
-                                                              text:
-                                                                  'Continue with Google',
+                                                              text: FFLocalizations
+                                                                      .of(context)
+                                                                  .getText(
+                                                                'ph6l58uv' /* Continue with Google */,
+                                                              ),
                                                               icon: FaIcon(
                                                                 FontAwesomeIcons
                                                                     .google,
@@ -1498,8 +1617,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                                           context
                                                                               .mounted);
                                                                     },
-                                                                    text:
-                                                                        'Continue with Apple',
+                                                                    text: FFLocalizations.of(
+                                                                            context)
+                                                                        .getText(
+                                                                      'mp833r1x' /* Continue with Apple */,
+                                                                    ),
                                                                     icon:
                                                                         FaIcon(
                                                                       FontAwesomeIcons
@@ -1585,8 +1707,11 @@ class _Auth2WidgetState extends State<Auth2Widget>
                                                                 context
                                                                     .mounted);
                                                           },
-                                                          text:
-                                                              'Forgot Password?',
+                                                          text: FFLocalizations
+                                                                  .of(context)
+                                                              .getText(
+                                                            '0jawxomz' /* Forgot Password? */,
+                                                          ),
                                                           options:
                                                               FFButtonOptions(
                                                             height: 44.0,

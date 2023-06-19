@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,12 @@ class _ProgramWidgetState extends State<ProgramWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ProgramModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      // setPageIsPortal
+      FFAppState().isPortalBool = false;
+    });
   }
 
   @override
@@ -42,6 +49,8 @@ class _ProgramWidgetState extends State<ProgramWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return StreamBuilder<ProgramsRecord>(
       stream: ProgramsRecord.getDocument(widget.programRef!),
       builder: (context, snapshot) {
@@ -73,7 +82,9 @@ class _ProgramWidgetState extends State<ProgramWidget> {
                   color: FlutterFlowTheme.of(context).primaryText),
               automaticallyImplyLeading: true,
               title: Text(
-                'Page Title',
+                FFLocalizations.of(context).getText(
+                  '3nop43a4' /* Page Title */,
+                ),
                 style: FlutterFlowTheme.of(context).headlineMedium.override(
                       fontFamily: 'Jost',
                       color: FlutterFlowTheme.of(context).primaryText,
@@ -109,7 +120,11 @@ class _ProgramWidgetState extends State<ProgramWidget> {
                         style: FlutterFlowTheme.of(context).bodyMedium,
                       ),
                       Text(
-                        dateTimeFormat('d/M', programProgramsRecord.createdAt!),
+                        dateTimeFormat(
+                          'd/M',
+                          programProgramsRecord.createdAt!,
+                          locale: FFLocalizations.of(context).languageCode,
+                        ),
                         style: FlutterFlowTheme.of(context).bodyMedium,
                       ),
                       Expanded(
@@ -163,7 +178,7 @@ class _ProgramWidgetState extends State<ProgramWidget> {
                                         highlightColor: Colors.transparent,
                                         onTap: () async {
                                           context.pushNamed(
-                                            'workout',
+                                            'workoutOverview',
                                             queryParameters: {
                                               'workoutRef': serializeParam(
                                                 listViewWorkoutsRecord
@@ -222,10 +237,13 @@ class _ProgramWidgetState extends State<ProgramWidget> {
                       ),
                     ],
                   ),
-                  wrapWithModel(
-                    model: _model.bottomNavModel,
-                    updateCallback: () => setState(() {}),
-                    child: BottomNavWidget(),
+                  Align(
+                    alignment: AlignmentDirectional(0.0, 1.0),
+                    child: wrapWithModel(
+                      model: _model.bottomNavModel,
+                      updateCallback: () => setState(() {}),
+                      child: BottomNavWidget(),
+                    ),
                   ),
                 ],
               ),
