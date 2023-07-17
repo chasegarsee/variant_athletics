@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -42,7 +44,7 @@ class StreaksRecord extends FirestoreRecord {
   void _initializeFields() {
     _endDate = snapshotData['endDate'] as DateTime?;
     _startDate = snapshotData['startDate'] as DateTime?;
-    _streakCount = snapshotData['streakCount'] as int?;
+    _streakCount = castToType<int>(snapshotData['streakCount']);
     _userId = snapshotData['userId'] as String?;
     _workoutId = snapshotData['workoutId'] as String?;
   }
@@ -99,4 +101,24 @@ Map<String, dynamic> createStreaksRecordData({
   );
 
   return firestoreData;
+}
+
+class StreaksRecordDocumentEquality implements Equality<StreaksRecord> {
+  const StreaksRecordDocumentEquality();
+
+  @override
+  bool equals(StreaksRecord? e1, StreaksRecord? e2) {
+    return e1?.endDate == e2?.endDate &&
+        e1?.startDate == e2?.startDate &&
+        e1?.streakCount == e2?.streakCount &&
+        e1?.userId == e2?.userId &&
+        e1?.workoutId == e2?.workoutId;
+  }
+
+  @override
+  int hash(StreaksRecord? e) => const ListEquality().hash(
+      [e?.endDate, e?.startDate, e?.streakCount, e?.userId, e?.workoutId]);
+
+  @override
+  bool isValidKey(Object? o) => o is StreaksRecord;
 }

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -74,4 +76,20 @@ Map<String, dynamic> createLikesRecordData({
   );
 
   return firestoreData;
+}
+
+class LikesRecordDocumentEquality implements Equality<LikesRecord> {
+  const LikesRecordDocumentEquality();
+
+  @override
+  bool equals(LikesRecord? e1, LikesRecord? e2) {
+    return e1?.collectionId == e2?.collectionId && e1?.userId == e2?.userId;
+  }
+
+  @override
+  int hash(LikesRecord? e) =>
+      const ListEquality().hash([e?.collectionId, e?.userId]);
+
+  @override
+  bool isValidKey(Object? o) => o is LikesRecord;
 }

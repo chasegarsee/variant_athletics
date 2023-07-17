@@ -105,26 +105,7 @@ Locale createLocale(String language) => language.contains('_')
     : Locale(language);
 
 final kTranslationsMap = <Map<String, Map<String, String>>>[
-  // discover
-  {
-    'mrdy4n49': {
-      'en': 'Variant Athletics',
-      'th': '',
-    },
-    'f1qx849h': {
-      'en': 'Featured',
-      'th': '',
-    },
-    'nw0p60he': {
-      'en': 'Show All ➔',
-      'th': '',
-    },
-    'ha21fvuq': {
-      'en': 'Home',
-      'th': '',
-    },
-  },
-  // coach
+  // programs
   {
     '3e1pchjb': {
       'en': 'Home',
@@ -145,26 +126,27 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': 'Notification Settings',
       'th': '',
     },
+    'dxf5v3c2': {
+      'en': 'Coach Portal',
+      'th': '',
+    },
     'ro3uek1q': {
       'en': 'Log Out',
       'th': '',
     },
   },
-  // featured
-  {
-    'kx8gw9oa': {
-      'en': 'Featured',
-      'th': '',
-    },
-    'zaaf6o5v': {
-      'en': 'Home',
-      'th': '',
-    },
-  },
   // program
   {
-    '3nop43a4': {
-      'en': 'Page Title',
+    '3cgxxzr4': {
+      'en': 'Week',
+      'th': '',
+    },
+    'klqzfs8y': {
+      'en': 'Day',
+      'th': '',
+    },
+    'qs89xnv9': {
+      'en': 'Select workout to begin',
       'th': '',
     },
     'mp0vkrm1': {
@@ -274,21 +256,6 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'th': '',
     },
   },
-  // workoutOverview
-  {
-    'uz5jj6rj': {
-      'en': 'Overview',
-      'th': '',
-    },
-    'oc2ha8h1': {
-      'en': 'Start Workout',
-      'th': '',
-    },
-    'axfe0gkj': {
-      'en': 'Home',
-      'th': '',
-    },
-  },
   // coachPortal
   {
     'wiji0nfr': {
@@ -351,17 +318,6 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'th': '',
     },
   },
-  // newWorkout
-  {
-    '9vasxywk': {
-      'en': 'Create New Program',
-      'th': '',
-    },
-    'gbck15mg': {
-      'en': 'Home',
-      'th': '',
-    },
-  },
   // editProgram
   {
     '38oejfdy': {
@@ -381,6 +337,37 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'th': '',
     },
     '62dgq4i4': {
+      'en': 'Home',
+      'th': '',
+    },
+  },
+  // newWorkout
+  {
+    'rg4jg2nr': {
+      'en': 'New Program',
+      'th': '',
+    },
+    't7pc9wnb': {
+      'en': 'Cover Photo',
+      'th': '',
+    },
+    'pffuke7d': {
+      'en': 'Title',
+      'th': '',
+    },
+    'qbnx8t40': {
+      'en': 'Description',
+      'th': '',
+    },
+    'pz95083y': {
+      'en': 'Duration',
+      'th': '',
+    },
+    'u0oxxbay': {
+      'en': 'Save',
+      'th': '',
+    },
+    'alursg4r': {
       'en': 'Home',
       'th': '',
     },

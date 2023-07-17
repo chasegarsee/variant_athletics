@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -99,4 +101,24 @@ Map<String, dynamic> createMovementsRecordData({
   );
 
   return firestoreData;
+}
+
+class MovementsRecordDocumentEquality implements Equality<MovementsRecord> {
+  const MovementsRecordDocumentEquality();
+
+  @override
+  bool equals(MovementsRecord? e1, MovementsRecord? e2) {
+    return e1?.details == e2?.details &&
+        e1?.name == e2?.name &&
+        e1?.workoutId == e2?.workoutId &&
+        e1?.videoId == e2?.videoId &&
+        e1?.videoUrl == e2?.videoUrl;
+  }
+
+  @override
+  int hash(MovementsRecord? e) => const ListEquality()
+      .hash([e?.details, e?.name, e?.workoutId, e?.videoId, e?.videoUrl]);
+
+  @override
+  bool isValidKey(Object? o) => o is MovementsRecord;
 }

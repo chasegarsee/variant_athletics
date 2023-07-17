@@ -7,6 +7,7 @@ import 'package:page_transition/page_transition.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow_theme.dart';
 import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 
 import '../../auth/base_auth_user_provider.dart';
 
@@ -79,26 +80,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? DiscoverWidget() : Auth2Widget(),
+          appStateNotifier.loggedIn ? ProgramsWidget() : Auth2Widget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? DiscoverWidget() : Auth2Widget(),
+              appStateNotifier.loggedIn ? ProgramsWidget() : Auth2Widget(),
         ),
         FFRoute(
-          name: 'discover',
-          path: '/discover',
-          builder: (context, params) => DiscoverWidget(),
-        ),
-        FFRoute(
-          name: 'coach',
-          path: '/coach',
-          builder: (context, params) => CoachWidget(
-            coachUid: params.getParam(
-                'coachUid', ParamType.DocumentReference, false, ['coaches']),
-          ),
+          name: 'programs',
+          path: '/programs',
+          builder: (context, params) => ProgramsWidget(),
         ),
         FFRoute(
           name: 'profile',
@@ -109,16 +102,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: 'featured',
-          path: '/featured',
-          builder: (context, params) => FeaturedWidget(),
-        ),
-        FFRoute(
           name: 'program',
           path: '/program',
           builder: (context, params) => ProgramWidget(
-            programRef: params.getParam(
-                'programRef', ParamType.DocumentReference, false, ['programs']),
+            programId: params.getParam('programId', ParamType.JSON),
+            programName: params.getParam('programName', ParamType.JSON),
           ),
         ),
         FFRoute(
@@ -132,18 +120,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => WorkoutWidget(
             workoutRef: params.getParam(
                 'workoutRef', ParamType.DocumentReference, false, ['workouts']),
-            programRef: params.getParam(
-                'programRef', ParamType.DocumentReference, false, ['programs']),
-          ),
-        ),
-        FFRoute(
-          name: 'workoutOverview',
-          path: '/workoutOverview',
-          builder: (context, params) => WorkoutOverviewWidget(
-            workoutRef: params.getParam(
-                'workoutRef', ParamType.DocumentReference, false, ['workouts']),
-            programRef: params.getParam(
-                'programRef', ParamType.DocumentReference, false, ['programs']),
+            program: params.getParam('program', ParamType.JSON),
           ),
         ),
         FFRoute(
@@ -151,30 +128,17 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/coachPortal',
           asyncParams: {
             'currentUser': getDoc(['users'], UsersRecord.fromSnapshot),
-            'currentCoach': getDoc(['coaches'], CoachesRecord.fromSnapshot),
             'programIndex0': getDoc(['programs'], ProgramsRecord.fromSnapshot),
           },
           builder: (context, params) => CoachPortalWidget(
             currentUser: params.getParam('currentUser', ParamType.Document),
-            currentCoach: params.getParam('currentCoach', ParamType.Document),
             programIndex0: params.getParam('programIndex0', ParamType.Document),
           ),
         ),
         FFRoute(
           name: 'newProgram',
           path: '/newProgram',
-          builder: (context, params) => NewProgramWidget(
-            coachRef: params.getParam(
-                'coachRef', ParamType.DocumentReference, false, ['coaches']),
-          ),
-        ),
-        FFRoute(
-          name: 'newWorkout',
-          path: '/newWorkout',
-          builder: (context, params) => NewWorkoutWidget(
-            coachRef: params.getParam(
-                'coachRef', ParamType.DocumentReference, false, ['coaches']),
-          ),
+          builder: (context, params) => NewProgramWidget(),
         ),
         FFRoute(
           name: 'editProgram',
@@ -182,13 +146,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           asyncParams: {
             'programDoc': getDoc(['programs'], ProgramsRecord.fromSnapshot),
             'currentUser': getDoc(['users'], UsersRecord.fromSnapshot),
-            'coachDoc': getDoc(['coaches'], CoachesRecord.fromSnapshot),
           },
           builder: (context, params) => EditProgramWidget(
             programDoc: params.getParam('programDoc', ParamType.Document),
             currentUser: params.getParam('currentUser', ParamType.Document),
-            coachDoc: params.getParam('coachDoc', ParamType.Document),
           ),
+        ),
+        FFRoute(
+          name: 'newWorkout',
+          path: '/newWorkout',
+          builder: (context, params) => NewWorkoutWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],

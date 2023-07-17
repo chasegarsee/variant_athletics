@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -44,20 +46,25 @@ class UsersRecord extends FirestoreRecord {
   String get phoneNumber => _phoneNumber ?? '';
   bool hasPhoneNumber() => _phoneNumber != null;
 
-  // "favoriteCoach" field.
-  String? _favoriteCoach;
-  String get favoriteCoach => _favoriteCoach ?? '';
-  bool hasFavoriteCoach() => _favoriteCoach != null;
-
   // "isCoach" field.
   bool? _isCoach;
   bool get isCoach => _isCoach ?? false;
   bool hasIsCoach() => _isCoach != null;
 
-  // "coachUid" field.
-  String? _coachUid;
-  String get coachUid => _coachUid ?? '';
-  bool hasCoachUid() => _coachUid != null;
+  // "completedWorkouts" field.
+  List<String>? _completedWorkouts;
+  List<String> get completedWorkouts => _completedWorkouts ?? const [];
+  bool hasCompletedWorkouts() => _completedWorkouts != null;
+
+  // "currentProgramId" field.
+  String? _currentProgramId;
+  String get currentProgramId => _currentProgramId ?? '';
+  bool hasCurrentProgramId() => _currentProgramId != null;
+
+  // "exercises" field.
+  List<ExercisesStruct>? _exercises;
+  List<ExercisesStruct> get exercises => _exercises ?? const [];
+  bool hasExercises() => _exercises != null;
 
   void _initializeFields() {
     _email = snapshotData['email'] as String?;
@@ -66,9 +73,13 @@ class UsersRecord extends FirestoreRecord {
     _uid = snapshotData['uid'] as String?;
     _createdTime = snapshotData['created_time'] as DateTime?;
     _phoneNumber = snapshotData['phone_number'] as String?;
-    _favoriteCoach = snapshotData['favoriteCoach'] as String?;
     _isCoach = snapshotData['isCoach'] as bool?;
-    _coachUid = snapshotData['coachUid'] as String?;
+    _completedWorkouts = getDataList(snapshotData['completedWorkouts']);
+    _currentProgramId = snapshotData['currentProgramId'] as String?;
+    _exercises = getStructList(
+      snapshotData['exercises'],
+      ExercisesStruct.fromMap,
+    );
   }
 
   static CollectionReference get collection =>
@@ -111,9 +122,8 @@ Map<String, dynamic> createUsersRecordData({
   String? uid,
   DateTime? createdTime,
   String? phoneNumber,
-  String? favoriteCoach,
   bool? isCoach,
-  String? coachUid,
+  String? currentProgramId,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -123,11 +133,46 @@ Map<String, dynamic> createUsersRecordData({
       'uid': uid,
       'created_time': createdTime,
       'phone_number': phoneNumber,
-      'favoriteCoach': favoriteCoach,
       'isCoach': isCoach,
-      'coachUid': coachUid,
+      'currentProgramId': currentProgramId,
     }.withoutNulls,
   );
 
   return firestoreData;
+}
+
+class UsersRecordDocumentEquality implements Equality<UsersRecord> {
+  const UsersRecordDocumentEquality();
+
+  @override
+  bool equals(UsersRecord? e1, UsersRecord? e2) {
+    const listEquality = ListEquality();
+    return e1?.email == e2?.email &&
+        e1?.displayName == e2?.displayName &&
+        e1?.photoUrl == e2?.photoUrl &&
+        e1?.uid == e2?.uid &&
+        e1?.createdTime == e2?.createdTime &&
+        e1?.phoneNumber == e2?.phoneNumber &&
+        e1?.isCoach == e2?.isCoach &&
+        listEquality.equals(e1?.completedWorkouts, e2?.completedWorkouts) &&
+        e1?.currentProgramId == e2?.currentProgramId &&
+        listEquality.equals(e1?.exercises, e2?.exercises);
+  }
+
+  @override
+  int hash(UsersRecord? e) => const ListEquality().hash([
+        e?.email,
+        e?.displayName,
+        e?.photoUrl,
+        e?.uid,
+        e?.createdTime,
+        e?.phoneNumber,
+        e?.isCoach,
+        e?.completedWorkouts,
+        e?.currentProgramId,
+        e?.exercises
+      ]);
+
+  @override
+  bool isValidKey(Object? o) => o is UsersRecord;
 }

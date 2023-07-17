@@ -1,18 +1,3 @@
 {
-  "indexes": [
-    {
-      "collectionGroup": "programs",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "coachId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "createdAt",
-          "order": "DESCENDING"
-        }
-      ]
-    }
-  ]
+  "indexes": []
 }

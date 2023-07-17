@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'flutter_flow/request_manager.dart';
 import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
+import 'dart:convert';
 
 class FFAppState extends ChangeNotifier {
   static final FFAppState _instance = FFAppState._internal();
@@ -20,6 +22,18 @@ class FFAppState extends ChangeNotifier {
     });
     _safeInit(() {
       _isPortalBool = prefs.getBool('ff_isPortalBool') ?? _isPortalBool;
+    });
+    _safeInit(() {
+      _coachUID = prefs.getString('ff_coachUID') ?? _coachUID;
+    });
+    _safeInit(() {
+      _isProgram = prefs.getBool('ff_isProgram') ?? _isProgram;
+    });
+    _safeInit(() {
+      _showTimer = prefs.getBool('ff_showTimer') ?? _showTimer;
+    });
+    _safeInit(() {
+      _banner = prefs.getString('ff_banner') ?? _banner;
     });
   }
 
@@ -44,6 +58,66 @@ class FFAppState extends ChangeNotifier {
     prefs.setBool('ff_isPortalBool', _value);
   }
 
+  String _coachUID = '7i2AKzKcQdeV75IH85wl';
+  String get coachUID => _coachUID;
+  set coachUID(String _value) {
+    _coachUID = _value;
+    prefs.setString('ff_coachUID', _value);
+  }
+
+  bool _isProgram = false;
+  bool get isProgram => _isProgram;
+  set isProgram(bool _value) {
+    _isProgram = _value;
+    prefs.setBool('ff_isProgram', _value);
+  }
+
+  bool _showTimer = false;
+  bool get showTimer => _showTimer;
+  set showTimer(bool _value) {
+    _showTimer = _value;
+    prefs.setBool('ff_showTimer', _value);
+  }
+
+  dynamic _user;
+  dynamic get user => _user;
+  set user(dynamic _value) {
+    _user = _value;
+  }
+
+  List<dynamic> _programs = [];
+  List<dynamic> get programs => _programs;
+  set programs(List<dynamic> _value) {
+    _programs = _value;
+  }
+
+  void addToPrograms(dynamic _value) {
+    _programs.add(_value);
+  }
+
+  void removeFromPrograms(dynamic _value) {
+    _programs.remove(_value);
+  }
+
+  void removeAtIndexFromPrograms(int _index) {
+    _programs.removeAt(_index);
+  }
+
+  void updateProgramsAtIndex(
+    int _index,
+    dynamic Function(dynamic) updateFn,
+  ) {
+    _programs[_index] = updateFn(_programs[_index]);
+  }
+
+  String _banner =
+      'https://firebasestorage.googleapis.com/v0/b/variant-3baaf.appspot.com/o/users%2FrWyX65FEzkXcOYxAYQJABMokajS2%2Fuploads%2FHorizontal_Logo_Full_White.png?alt=media&token=e3af48b8-67b3-4e20-8131-33ed57901029';
+  String get banner => _banner;
+  set banner(String _value) {
+    _banner = _value;
+    prefs.setString('ff_banner', _value);
+  }
+
   final _currentUserManager = StreamRequestManager<List<UsersRecord>>();
   Stream<List<UsersRecord>> currentUser({
     String? uniqueQueryKey,
@@ -58,36 +132,6 @@ class FFAppState extends ChangeNotifier {
   void clearCurrentUserCache() => _currentUserManager.clear();
   void clearCurrentUserCacheKey(String? uniqueKey) =>
       _currentUserManager.clearRequest(uniqueKey);
-
-  final _favoriteCoachManager = StreamRequestManager<List<CoachesRecord>>();
-  Stream<List<CoachesRecord>> favoriteCoach({
-    String? uniqueQueryKey,
-    bool? overrideCache,
-    required Stream<List<CoachesRecord>> Function() requestFn,
-  }) =>
-      _favoriteCoachManager.performRequest(
-        uniqueQueryKey: uniqueQueryKey,
-        overrideCache: overrideCache,
-        requestFn: requestFn,
-      );
-  void clearFavoriteCoachCache() => _favoriteCoachManager.clear();
-  void clearFavoriteCoachCacheKey(String? uniqueKey) =>
-      _favoriteCoachManager.clearRequest(uniqueKey);
-
-  final _featuredCoachesManager = StreamRequestManager<List<CoachesRecord>>();
-  Stream<List<CoachesRecord>> featuredCoaches({
-    String? uniqueQueryKey,
-    bool? overrideCache,
-    required Stream<List<CoachesRecord>> Function() requestFn,
-  }) =>
-      _featuredCoachesManager.performRequest(
-        uniqueQueryKey: uniqueQueryKey,
-        overrideCache: overrideCache,
-        requestFn: requestFn,
-      );
-  void clearFeaturedCoachesCache() => _featuredCoachesManager.clear();
-  void clearFeaturedCoachesCacheKey(String? uniqueKey) =>
-      _featuredCoachesManager.clearRequest(uniqueKey);
 
   final _authenticatedCoachWorkoutsManager =
       FutureRequestManager<List<WorkoutsRecord>>();

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -34,17 +36,41 @@ class WorkoutsRecord extends FirestoreRecord {
   List<String> get exercises => _exercises ?? const [];
   bool hasExercises() => _exercises != null;
 
-  // "coachUid" field.
-  String? _coachUid;
-  String get coachUid => _coachUid ?? '';
-  bool hasCoachUid() => _coachUid != null;
+  // "schedule" field.
+  ScheduleStruct? _schedule;
+  ScheduleStruct get schedule => _schedule ?? ScheduleStruct();
+  bool hasSchedule() => _schedule != null;
+
+  // "workoutIndex" field.
+  int? _workoutIndex;
+  int get workoutIndex => _workoutIndex ?? 0;
+  bool hasWorkoutIndex() => _workoutIndex != null;
+
+  // "date" field.
+  DateTime? _date;
+  DateTime? get date => _date;
+  bool hasDate() => _date != null;
+
+  // "isRestDay" field.
+  bool? _isRestDay;
+  bool get isRestDay => _isRestDay ?? false;
+  bool hasIsRestDay() => _isRestDay != null;
+
+  // "id" field.
+  String? _id;
+  String get id => _id ?? '';
+  bool hasId() => _id != null;
 
   void _initializeFields() {
     _description = snapshotData['description'] as String?;
     _name = snapshotData['name'] as String?;
     _programId = snapshotData['programId'] as String?;
     _exercises = getDataList(snapshotData['exercises']);
-    _coachUid = snapshotData['coachUid'] as String?;
+    _schedule = ScheduleStruct.maybeFromMap(snapshotData['schedule']);
+    _workoutIndex = castToType<int>(snapshotData['workoutIndex']);
+    _date = snapshotData['date'] as DateTime?;
+    _isRestDay = snapshotData['isRestDay'] as bool?;
+    _id = snapshotData['id'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -85,16 +111,61 @@ Map<String, dynamic> createWorkoutsRecordData({
   String? description,
   String? name,
   String? programId,
-  String? coachUid,
+  ScheduleStruct? schedule,
+  int? workoutIndex,
+  DateTime? date,
+  bool? isRestDay,
+  String? id,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
       'description': description,
       'name': name,
       'programId': programId,
-      'coachUid': coachUid,
+      'schedule': ScheduleStruct().toMap(),
+      'workoutIndex': workoutIndex,
+      'date': date,
+      'isRestDay': isRestDay,
+      'id': id,
     }.withoutNulls,
   );
 
+  // Handle nested data for "schedule" field.
+  addScheduleStructData(firestoreData, schedule, 'schedule');
+
   return firestoreData;
+}
+
+class WorkoutsRecordDocumentEquality implements Equality<WorkoutsRecord> {
+  const WorkoutsRecordDocumentEquality();
+
+  @override
+  bool equals(WorkoutsRecord? e1, WorkoutsRecord? e2) {
+    const listEquality = ListEquality();
+    return e1?.description == e2?.description &&
+        e1?.name == e2?.name &&
+        e1?.programId == e2?.programId &&
+        listEquality.equals(e1?.exercises, e2?.exercises) &&
+        e1?.schedule == e2?.schedule &&
+        e1?.workoutIndex == e2?.workoutIndex &&
+        e1?.date == e2?.date &&
+        e1?.isRestDay == e2?.isRestDay &&
+        e1?.id == e2?.id;
+  }
+
+  @override
+  int hash(WorkoutsRecord? e) => const ListEquality().hash([
+        e?.description,
+        e?.name,
+        e?.programId,
+        e?.exercises,
+        e?.schedule,
+        e?.workoutIndex,
+        e?.date,
+        e?.isRestDay,
+        e?.id
+      ]);
+
+  @override
+  bool isValidKey(Object? o) => o is WorkoutsRecord;
 }

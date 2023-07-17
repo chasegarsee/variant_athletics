@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
@@ -13,11 +15,6 @@ class ExercisesRecord extends FirestoreRecord {
   ) : super(reference, data) {
     _initializeFields();
   }
-
-  // "coachId" field.
-  String? _coachId;
-  String get coachId => _coachId ?? '';
-  bool hasCoachId() => _coachId != null;
 
   // "details" field.
   String? _details;
@@ -45,7 +42,6 @@ class ExercisesRecord extends FirestoreRecord {
   bool hasWorkoutId() => _workoutId != null;
 
   void _initializeFields() {
-    _coachId = snapshotData['coachId'] as String?;
     _details = snapshotData['details'] as String?;
     _name = snapshotData['name'] as String?;
     _videoId = snapshotData['videoId'] as String?;
@@ -88,7 +84,6 @@ class ExercisesRecord extends FirestoreRecord {
 }
 
 Map<String, dynamic> createExercisesRecordData({
-  String? coachId,
   String? details,
   String? name,
   String? videoId,
@@ -97,7 +92,6 @@ Map<String, dynamic> createExercisesRecordData({
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
-      'coachId': coachId,
       'details': details,
       'name': name,
       'videoId': videoId,
@@ -107,4 +101,24 @@ Map<String, dynamic> createExercisesRecordData({
   );
 
   return firestoreData;
+}
+
+class ExercisesRecordDocumentEquality implements Equality<ExercisesRecord> {
+  const ExercisesRecordDocumentEquality();
+
+  @override
+  bool equals(ExercisesRecord? e1, ExercisesRecord? e2) {
+    return e1?.details == e2?.details &&
+        e1?.name == e2?.name &&
+        e1?.videoId == e2?.videoId &&
+        e1?.videoUrl == e2?.videoUrl &&
+        e1?.workoutId == e2?.workoutId;
+  }
+
+  @override
+  int hash(ExercisesRecord? e) => const ListEquality()
+      .hash([e?.details, e?.name, e?.videoId, e?.videoUrl, e?.workoutId]);
+
+  @override
+  bool isValidKey(Object? o) => o is ExercisesRecord;
 }
