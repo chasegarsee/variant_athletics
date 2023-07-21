@@ -118,6 +118,31 @@ class FFAppState extends ChangeNotifier {
     prefs.setString('ff_banner', _value);
   }
 
+  List<dynamic> _exercises = [];
+  List<dynamic> get exercises => _exercises;
+  set exercises(List<dynamic> _value) {
+    _exercises = _value;
+  }
+
+  void addToExercises(dynamic _value) {
+    _exercises.add(_value);
+  }
+
+  void removeFromExercises(dynamic _value) {
+    _exercises.remove(_value);
+  }
+
+  void removeAtIndexFromExercises(int _index) {
+    _exercises.removeAt(_index);
+  }
+
+  void updateExercisesAtIndex(
+    int _index,
+    dynamic Function(dynamic) updateFn,
+  ) {
+    _exercises[_index] = updateFn(_exercises[_index]);
+  }
+
   final _currentUserManager = StreamRequestManager<List<UsersRecord>>();
   Stream<List<UsersRecord>> currentUser({
     String? uniqueQueryKey,

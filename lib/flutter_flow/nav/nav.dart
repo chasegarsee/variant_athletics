@@ -156,6 +156,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'newWorkout',
           path: '/newWorkout',
           builder: (context, params) => NewWorkoutWidget(),
+        ),
+        FFRoute(
+          name: 'exerciseLibrary',
+          path: '/exerciseLibrary',
+          builder: (context, params) => ExerciseLibraryWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],

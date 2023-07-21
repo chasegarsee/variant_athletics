@@ -372,6 +372,77 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'th': '',
     },
   },
+  // exerciseLibrary
+  {
+    'llia7ft4': {
+      'en': 'All Exercises',
+      'th': '',
+    },
+    'aoqbyovd': {
+      'en': 'All Exercises',
+      'th': '',
+    },
+    'on062eel': {
+      'en': 'Abs',
+      'th': '',
+    },
+    '5eiicejk': {
+      'en': 'Back',
+      'th': '',
+    },
+    'z7qlqwso': {
+      'en': 'Calves',
+      'th': '',
+    },
+    'hq6833yj': {
+      'en': 'Chest',
+      'th': '',
+    },
+    'in8bvc0x': {
+      'en': 'Forearms',
+      'th': '',
+    },
+    'dq48mgdx': {
+      'en': 'Glutes',
+      'th': '',
+    },
+    'k99mqzc8': {
+      'en': 'Hamstrings',
+      'th': '',
+    },
+    'evzbqcde': {
+      'en': 'Lower Back',
+      'th': '',
+    },
+    'z2dq2zrb': {
+      'en': 'Quads',
+      'th': '',
+    },
+    'jbolmqu3': {
+      'en': 'Shoulders',
+      'th': '',
+    },
+    'txl16uw6': {
+      'en': 'Traps',
+      'th': '',
+    },
+    'vk8usew7': {
+      'en': 'Triceps',
+      'th': '',
+    },
+    '4t2ha51o': {
+      'en': 'Please select...',
+      'th': '',
+    },
+    'iy2fkfow': {
+      'en': 'Search for an item...',
+      'th': '',
+    },
+    'huzn05ul': {
+      'en': 'Home',
+      'th': '',
+    },
+  },
   // deleteProgramBottomSheet
   {
     'garzgyg4': {

@@ -41,12 +41,24 @@ class ExercisesRecord extends FirestoreRecord {
   String get workoutId => _workoutId ?? '';
   bool hasWorkoutId() => _workoutId != null;
 
+  // "tag" field.
+  String? _tag;
+  String get tag => _tag ?? '';
+  bool hasTag() => _tag != null;
+
+  // "imageUrl" field.
+  String? _imageUrl;
+  String get imageUrl => _imageUrl ?? '';
+  bool hasImageUrl() => _imageUrl != null;
+
   void _initializeFields() {
     _details = snapshotData['details'] as String?;
     _name = snapshotData['name'] as String?;
     _videoId = snapshotData['videoId'] as String?;
     _videoUrl = snapshotData['videoUrl'] as String?;
     _workoutId = snapshotData['workoutId'] as String?;
+    _tag = snapshotData['tag'] as String?;
+    _imageUrl = snapshotData['imageUrl'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -89,6 +101,8 @@ Map<String, dynamic> createExercisesRecordData({
   String? videoId,
   String? videoUrl,
   String? workoutId,
+  String? tag,
+  String? imageUrl,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -97,6 +111,8 @@ Map<String, dynamic> createExercisesRecordData({
       'videoId': videoId,
       'videoUrl': videoUrl,
       'workoutId': workoutId,
+      'tag': tag,
+      'imageUrl': imageUrl,
     }.withoutNulls,
   );
 
@@ -112,12 +128,21 @@ class ExercisesRecordDocumentEquality implements Equality<ExercisesRecord> {
         e1?.name == e2?.name &&
         e1?.videoId == e2?.videoId &&
         e1?.videoUrl == e2?.videoUrl &&
-        e1?.workoutId == e2?.workoutId;
+        e1?.workoutId == e2?.workoutId &&
+        e1?.tag == e2?.tag &&
+        e1?.imageUrl == e2?.imageUrl;
   }
 
   @override
-  int hash(ExercisesRecord? e) => const ListEquality()
-      .hash([e?.details, e?.name, e?.videoId, e?.videoUrl, e?.workoutId]);
+  int hash(ExercisesRecord? e) => const ListEquality().hash([
+        e?.details,
+        e?.name,
+        e?.videoId,
+        e?.videoUrl,
+        e?.workoutId,
+        e?.tag,
+        e?.imageUrl
+      ]);
 
   @override
   bool isValidKey(Object? o) => o is ExercisesRecord;

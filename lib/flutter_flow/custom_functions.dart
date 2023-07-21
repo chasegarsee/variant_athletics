@@ -61,3 +61,49 @@ List<dynamic>? convertFBWorkoutToJSON(List<WorkoutsRecord>? workoutDoc) {
 
   return workoutsJson;
 }
+
+List<dynamic>? convertFBExerciseToJSON(List<ExercisesRecord>? exerciseDoc) {
+  exerciseDoc ??= [];
+  List<Map<String, dynamic>> exercisesJson = exerciseDoc.map((exercise) {
+    return {
+      'details': exercise.details,
+      'imageUrl': exercise.imageUrl,
+      'name': exercise.name,
+      'tag': exercise.tag,
+      'videoId': exercise.videoId,
+      'videoUrl': exercise.videoUrl,
+      'workoutId': exercise.workoutId,
+    };
+  }).toList();
+  return exercisesJson;
+}
+
+List<dynamic>? filterJson(
+  String? field,
+  String? value,
+  List<dynamic> data,
+) {
+  List<dynamic> filteredList = [];
+
+  for (dynamic item in data) {
+    List<String> fields = field!.split('.');
+    dynamic itemValue = item;
+
+    for (String f in fields) {
+      itemValue = itemValue[f];
+    }
+
+    bool isMatch = false;
+
+    if (itemValue is String && value is String) {
+      isMatch = itemValue.toLowerCase().contains(value.toLowerCase());
+    } else {
+      throw ArgumentError('Unsupported field type for "contains" operation');
+    }
+    if (isMatch) {
+      filteredList.add(item);
+    }
+  }
+
+  return filteredList;
+}
